@@ -1,8 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function Dropdown({ data, onChange, value }) {
   // state for open and close menu
   const [isOpen, setIsOpen] = useState(false);
+
+  const divEl = useRef();
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!divEl.current) {
+        return;
+      }
+      if (!divEl.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
+  }, []);
 
   // handle click option section
   const handleOptionClick = (option) => {
@@ -27,7 +41,7 @@ function Dropdown({ data, onChange, value }) {
     );
   });
   return (
-    <div className="w-1/4">
+    <div className="w-1/4" ref={divEl}>
       <div
         className="border-2 border-blue-500 text-center "
         onClick={handleSelectClick}
