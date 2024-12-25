@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-function Dropdown({ data, onSelect, selection }) {
+function Dropdown({ data, onChange, value }) {
   // state for open and close menu
   const [isOpen, setIsOpen] = useState(false);
 
   // handle click option section
   const handleOptionClick = (option) => {
     setIsOpen(false);
-    onSelect(option);
+    onChange(option);
   };
 
   // handle Click select section
@@ -32,7 +32,7 @@ function Dropdown({ data, onSelect, selection }) {
         className="border-2 border-blue-500 text-center "
         onClick={handleSelectClick}
       >
-        {selection?.label || 'No Item Selected'}
+        {value?.label || 'No Item Selected'}
       </div>
       <div className="">{isOpen && renderedList}</div>
     </div>
