@@ -26,7 +26,7 @@ function Dropdown({ data, onChange, value }) {
 
   // handle Click select section
   const handleSelectClick = () => {
-    setIsOpen((currentIsOpen) => setIsOpen(!currentIsOpen));
+    setIsOpen((currentIsOpen) => !currentIsOpen);
   };
 
   const renderedList = data.map((option) => {
