@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import Modal from './components/Modal';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [showModal, setShowModal] = useState(false);
+  const handleClick = () => {
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  const actionBar = (
+    <div>
+      <button className="border-2 rounded-full p-2" onClick={handleClose}>
+        X
+      </button>
+    </div>
+  );
+
+  const modal = (
+    <Modal onClose={handleClose} actionBar={actionBar}>
+      <p>Here is an important agreement for you to accept</p>
+    </Modal>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <button
+        className="border-2 bg-slate-500 rounded-md px-4 py-1.5 text-white active:translate-y-0.5 transition-all"
+        onClick={handleClick}
+      >
+        show modal
+      </button>
+      {showModal && modal}
+    </div>
+  );
 }
 
-export default App
+export default App;
