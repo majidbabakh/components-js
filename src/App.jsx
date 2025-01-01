@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import AddForm from './assets/components/AddForm';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [inputValue, setInputValue] = useState(0);
 
   const handleIncrementClick = () => {
     setCount(count + 1);
@@ -14,8 +14,15 @@ function App() {
     setCount(count - 1);
   };
 
-  const handleInputChange = (number) => {
-    setCount(count + number);
+  const handleChange = (e) => {
+    const value = parseInt(e.target.value) || 0;
+    setInputValue(value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setCount(count + inputValue);
+    setInputValue(0);
   };
 
   return (
@@ -24,7 +31,15 @@ function App() {
       <button onClick={handleIncrementClick}>Increment</button>
       <button onClick={handleDecrementClick}>Decrement</button>
 
-      <AddForm onAdd={handleInputChange}></AddForm>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={inputValue || ''}
+          onChange={handleChange}
+          placeholder="Add new item"
+        />
+        <button type="submit ">Add</button>
+      </form>
     </div>
   );
 }
