@@ -1,40 +1,77 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+import { produce } from 'immer';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [inputValue, setInputValue] = useState(0);
+  const INCREMENT_COUNT = 'increment';
+  const DECREMENT_COUNT = 'decrement';
+  const SET_VALUE_TO_ADD = 'change-value-to-add';
+  const ADD_VALUE_TO_COUNT = 'add-value-to-count';
+
+  const [state, dispatch] = useReducer(produce(reducer), {
+    count: 0,
+    valueToAdd: 0
+  });
 
   const handleIncrementClick = () => {
-    setCount(count + 1);
+    dispatch({
+      type: INCREMENT_COUNT
+    });
   };
   const handleDecrementClick = () => {
-    if (count <= 0) {
-      return;
-    }
-    setCount(count - 1);
+    dispatch({
+      type: DECREMENT_COUNT
+    });
   };
 
   const handleChange = (e) => {
     const value = parseInt(e.target.value) || 0;
-    setInputValue(value);
+    dispatch({
+      type: SET_VALUE_TO_ADD,
+      payload: value
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setCount(count + inputValue);
-    setInputValue(0);
+    dispatch({
+      type: ADD_VALUE_TO_COUNT
+    });
   };
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case INCREMENT_COUNT:
+        state.count = state.count + 1;
+        return;
+
+      case DECREMENT_COUNT:
+        state.count = state.count - 1;
+        return;
+
+      case ADD_VALUE_TO_COUNT:
+        state.count = state.count + state.valueToAdd;
+        state.valueToAdd = 0;
+        return;
+
+      case SET_VALUE_TO_ADD:
+        state.valueToAdd = action.payload;
+        return;
+
+      default:
+        return state;
+    }
+  }
 
   return (
     <div>
-      <p>Current Count: {count}</p>
+      <p>Current Count: {state.count}</p>
       <button onClick={handleIncrementClick}>Increment</button>
       <button onClick={handleDecrementClick}>Decrement</button>
 
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={inputValue || ''}
+          value={state.valueToAdd || ''}
           onChange={handleChange}
           placeholder="Add new item"
         />
